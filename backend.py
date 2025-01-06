@@ -1,21 +1,12 @@
-# backend.py
-
 import pandas as pd
 from transformers import pipeline
 import json
-import sqlite3  # For SQL database interactions
-import PyPDF2  # For PDF file reading
-import openpyxl  # For Excel file reading
+import sqlite3
+import PyPDF2
+import openpyxl
 
-# Initialize a GPT model using the Hugging Face transformers pipeline
+# Initialize the GPT model
 gpt_generator = pipeline('text-generation', model='gpt2')
-
-def process_query(query):
-    """
-    Processes a natural language query using a pre-trained GPT model.
-    """
-    response = gpt_generator(query, max_length=50, num_return_sequences=1)
-    return response[0]['generated_text']
 
 def read_data(file_path, file_type):
     """
@@ -36,12 +27,19 @@ def read_data(file_path, file_type):
                 text.append(page.extract_text())
             return "\n".join(text)
     elif file_type == 'sql':
-        conn = sqlite3.connect(file_path)  # Assuming SQLite for simplicity
-        query = "SELECT * FROM tablename"  # You need to customize this query
+        conn = sqlite3.connect(file_path)
+        query = "SELECT * FROM tablename"  # Customize this query
         return pd.read_sql_query(query, conn)
+    else:
+        raise ValueError(f"Unsupported file type: {file_type}")
 
-# Example usage
+def process_query(query):
+    """
+    Processes a natural language query using a pre-trained GPT model.
+    """
+    response = gpt_generator(query, max_length=50, num_return_sequences=1)
+    return response[0]['generated_text']
+
 if __name__ == "__main__":
-    query = "Tell me about AI in healthcare."
-    print("Query: ", query)
-    print("Response: ", process_query(query))
+    # Add a small test block here
+    print("Running backend.py")
