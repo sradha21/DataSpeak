@@ -6,4 +6,3 @@ PyPDF2
 openpyxl
 pandas
 transformers
-sqlite3 
