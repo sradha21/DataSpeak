@@ -2,3 +2,8 @@ gradio==3.0
 pandas
 transformers
 torch
+PyPDF2
+openpyxl
+pandas
+transformers
+sqlite3 
